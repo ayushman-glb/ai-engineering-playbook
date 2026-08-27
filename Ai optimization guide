@@ -1,398 +1,350 @@
-# 🧭 The AI-Assisted Engineering Playbook
-### A Knowledge Guide to Prompting, Context Engineering, Token Optimization & the Modern AI Model Landscape
+<div align="center">
+
+# 🧭 AI Engineering Playbook
+
+### Prompting · Context Engineering · Token Optimization · The Model Landscape
+
+![Markdown](https://img.shields.io/badge/format-Markdown-blue?style=flat-square)
+![Mermaid](https://img.shields.io/badge/diagrams-Mermaid-ff69b4?style=flat-square)
+![Status](https://img.shields.io/badge/status-living%20document-brightgreen?style=flat-square)
+![Focus](https://img.shields.io/badge/focus-agentic%20coding-orange?style=flat-square)
 
 > *"The goal is not the shortest prompt. The goal is the least total cost to reach a verified result."*
 
----
-
-## 📑 Table of Contents
-
-1. [The Big Picture — Ecosystem Map](#1-the-big-picture--ecosystem-map)
-2. [Part I — The Modern AI Dev Ecosystem (Tools & Repos)](#2-part-i--the-modern-ai-dev-ecosystem)
-3. [Part II — The Token Optimization Framework](#3-part-ii--the-token-optimization-framework)
-4. [Part III — Security Testing, Developer Knowledge & Anti-Vibe-Coding](#4-part-iii--security-testing-developer-knowledge--anti-vibe-coding)
-5. [Part IV — The AI Model Landscape (Models, Products, Hardware)](#5-part-iv--the-ai-model-landscape)
-6. [Master Cheat Sheet](#6-master-cheat-sheet)
-7. [Recommended Learning Path](#7-recommended-learning-path)
+</div>
 
 ---
 
-## 1. The Big Picture — Ecosystem Map
+## 🗺️ Navigate
 
-```
-                              ┌────────────────────┐
-                              │        YOU          │
-                              │ (Problem knowledge) │
-                              └─────────┬────────────┘
-                                        │
-                                        ▼
-                              ┌────────────────────┐
-                              │  TASK SPECIFICATION │
-                              └─────────┬────────────┘
-                                        │
-                     ┌──────────────────┼──────────────────┐
-                     ▼                  ▼                  ▼
-              ┌─────────────┐   ┌──────────────┐   ┌───────────────┐
-              │  PLANNING   │   │   CONTEXT     │   │     TOOLS      │
-              │  (GSD-style)│   │  ENGINEERING  │   │  (MCP servers) │
-              └──────┬──────┘   └──────┬────────┘   └───────┬────────┘
-                     └──────────────────┼───────────────────┘
-                                        ▼
-                              ┌────────────────────┐
-                              │   CODING AGENT      │
-                              │ (Cline/Roo/Claude   │
-                              │  Code/Cursor)        │
-                              └─────────┬────────────┘
-                                        ▼
-                              ┌────────────────────┐
-                              │   VERIFICATION      │
-                              │ Tests·Lint·Build·   │
-                              │ Runtime (Reticle)    │
-                              └─────────┬────────────┘
-                                        ▼
-                              ┌────────────────────┐
-                              │  REVIEW (CodeRabbit) │
-                              └─────────┬────────────┘
-                                        ▼
-                                    ✅ DONE
-```
+> Click any topic to jump straight there.
 
-**Core principle across every section of this guide:**
-
-> Prompting is not "writing instructions." It is **context engineering** — deciding *what* information, constraints, tools, examples, and verification steps an AI receives, and *when*.
-
----
-
-## 2. Part I — The Modern AI Dev Ecosystem
-
-### 🗺️ Ecosystem Overview
-
-| Layer | What it does | Example Tools |
+| # | Section | What's inside |
 |---|---|---|
-| 🧠 Planning | Break big goals into small verifiable tasks | GSD methodology |
-| 🔁 Execution loop | Autonomous implement→test→fix cycles | Ralph Loop |
-| 🔬 Runtime verification | Prove the app *actually* works | Reticle |
-| 🧪 Review | Catch bugs a second AI pass misses | CodeRabbit |
-| 🧵 Memory | Long-term, temporally-aware context | Graphiti |
-| 🔌 Tool access | On-demand structured data instead of context-dumping | MCP (Model Context Protocol) |
-| 💻 Local inference | Cheap/private models for simple subtasks | Ollama |
-| 🤖 Agent runtimes | Autonomous file/terminal/browser agents | Cline, Roo Code |
+| 0 | [🌐 System Map](#0-system-map) | The whole pipeline, one diagram |
+| 1 | [🧩 The Modern AI Dev Ecosystem](#1--the-modern-ai-dev-ecosystem) | Reticle · GSD · Ralph Loop · CodeRabbit · Graphiti · MCP · Ollama · Cline/Roo |
+| 2 | [⚙️ Token Optimization Framework](#2--the-token-optimization-framework) | Prompt structure, context tiers, verification pyramid |
+| 3 | [🛡️ Security, Knowledge & Anti-Vibe-Coding](#3--security-testing-developer-knowledge--anti-vibe-coding) | Strix, escalation ladder, the 5-question gate |
+| 4 | [🤖 The AI Model Landscape](#4--the-ai-model-landscape) | GPT · Claude · Gemini · Grok · DeepSeek · hardware |
+| 5 | [✅ Master Cheat Sheet](#5--master-cheat-sheet) | Checklist you can actually use |
+| 6 | [🎓 Learning Path](#6--recommended-learning-path) | What to build, in order |
+| 7 | [🔗 Reference Links](#7--reference-links) | Every repo/doc mentioned |
 
 ---
 
-### 🔍 2.1 Reticle — Runtime Verification for AI Agents
+## 0. System Map
 
-**The problem it solves:**
+```mermaid
+flowchart TD
+    A["🧑 YOU — problem knowledge"] --> B["📋 Task Specification"]
+    B --> C["🧠 Planning<br/>(GSD-style)"]
+    B --> D["🧵 Context Engineering"]
+    B --> E["🔌 Tools (MCP)"]
+    C --> F["🤖 Coding Agent<br/>(Cline / Roo / Claude Code / Cursor)"]
+    D --> F
+    E --> F
+    F --> G["🔬 Verification<br/>Tests · Lint · Build · Runtime (Reticle)"]
+    G -->|fail| F
+    G -->|pass| H["🐰 Review (CodeRabbit)"]
+    H --> I["✅ Done"]
 
-```
-AI writes code → AI reads its own diff → AI says "Done"
-        → You open the app → Something is broken 😬
+    style A fill:#2b2b40,color:#fff
+    style I fill:#1f8a4c,color:#fff
+    style G fill:#8a1f2b,color:#fff
 ```
 
-Reticle gives an agent access to signals from the **running application** — network requests, console errors, DOM/route state, framework signals, and the source location tied to a failure — instead of letting the model *guess* success from a diff or screenshot.
+**Core principle behind every section below:**
 
+> Prompting isn't "writing instructions." It's **context engineering** — deciding *what* the model receives, *when*, and *how much*.
+
+---
+
+## 1. 🧩 The Modern AI Dev Ecosystem
+
+```mermaid
+mindmap
+  root((AI Dev<br/>Ecosystem))
+    Planning
+      GSD methodology
+    Execution Loop
+      Ralph Loop
+    Runtime Verification
+      Reticle
+    Review
+      CodeRabbit
+    Memory
+      Graphiti
+    Tool Access
+      MCP servers
+    Local Inference
+      Ollama
+    Agent Runtimes
+      Cline
+      Roo Code
 ```
-Implement → Run app → Perform action → Reticle verifies real behavior
-     ▲                                            │
-     │                    FAIL                    │
-     └────── Fix code ◄── Return failure + source ─┘
-                          PASS → Continue
+
+<details>
+<summary><strong>🔍 1.1 — Reticle: Runtime Verification for AI Agents</strong> (click to expand)</summary>
+
+**The problem:** an agent reads its own diff, declares "done" — but a diff is not proof the app runs.
+
+```mermaid
+flowchart LR
+    A[Implement] --> B[Run App]
+    B --> C[Perform Action]
+    C --> D{Reticle verifies<br/>real runtime behavior}
+    D -->|PASS| E[✅ Continue]
+    D -->|FAIL| F[Return failure<br/>+ exact source location]
+    F --> A
 ```
+
+Reticle exposes network requests, console errors, DOM/route state, and framework signals via MCP — so the agent fixes only what's *actually* broken.
 
 🔗 [Reticle on GitHub](https://github.com/reticlehq/reticle)
+</details>
 
-**Why it matters:** A screenshot or diff is *not proof* the app works. Precise runtime feedback means the agent fixes only what's actually broken — fewer blind retries, fewer wasted tokens.
+<details>
+<summary><strong>📋 1.2 — GSD ("Get Shit Done"): Phased-Task Philosophy</strong></summary>
 
----
-
-### 📋 2.2 GSD ("Get Shit Done") — The Phased-Task Philosophy
-
-Instead of one giant vague instruction:
-
-```
-❌ "Build a production-ready SaaS app with auth, DB, payments,
-    dashboard, API, tests, and deployment."
-```
-
-GSD breaks it into an executable pipeline:
-
-```
-Research codebase → Implementation plan → Task breakdown
-   → Execute Task 1 → Verify → Execute Task 2 → Verify
-   → Integration test → Production validation
+```mermaid
+flowchart TD
+    A["❌ Build the ENTIRE app"] -.expensive.-> Z[Massive context held at once]
+    B["Big Goal"] --> C["Specification"]
+    C --> D["Plan"]
+    D --> E["Small Verifiable Task"]
+    E --> F["Execution"]
+    F --> G["Validation"]
+    G --> E
+    G --> H["Next Task"]
 ```
 
-**Why this saves tokens:** A giant request forces the model to hold architecture + requirements + files + history in context *simultaneously*. A phased system retrieves only what's needed for the *current* task.
+A phased system retrieves only what's needed for the *current* task — instead of holding architecture + requirements + files + history simultaneously.
+</details>
 
-```
-BIG GOAL → SPECIFICATION → PLAN → SMALL VERIFIABLE TASK
-   → EXECUTION → VALIDATION → NEXT TASK
-```
+<details>
+<summary><strong>🔄 1.3 — The Ralph Loop: Externally-Verified Iteration</strong></summary>
 
----
+> **The AI should never decide, by itself, whether it succeeded.**
 
-### 🔄 2.3 The Ralph Loop — Externally-Verified Iteration
-
-**Core insight:** *The AI should never be trusted to decide, by itself, whether it succeeded.*
-
-```
-Understand objective → Implement → Run tests/build
-        │
-        ▼
-   Did it pass? ──NO──► Inspect failure ──► Fix ──► Test again
-        │
-       YES
-        ▼
-      DONE
+```mermaid
+flowchart TD
+    A[Understand Objective] --> B[Implement]
+    B --> C[Run Tests / Build]
+    C --> D{Passed?}
+    D -->|No| E[Inspect Failure] --> F[Fix] --> C
+    D -->|Yes| G[✅ Done]
 ```
 
-Success must come from an **external, deterministic signal**: tests, linters, builds, runtime assertions — never "I think this looks right."
+**Ralph + Reticle combined:** Agent implements → Reticle checks the *running* app → failure + evidence → agent fixes → repeat.
+</details>
 
-**Ralph + Reticle combined:**
+<details>
+<summary><strong>🐰 1.4 — CodeRabbit: AI as the Review Layer</strong></summary>
 
+```mermaid
+flowchart LR
+    A[Developer / Agent writes code] --> B[PR / Diff]
+    B --> C[CodeRabbit analyzes:<br/>bugs · security · quality · standards]
+    C --> D[Fix]
 ```
-Agent → Implement → Reticle checks the RUNNING app
-      → Failure + evidence → Agent fixes → Repeat
+
+```mermaid
+flowchart TD
+    Agent_A[Agent A — Builder]
+    Agent_B[Agent B — Reviewer]
+    Tests[Tests — Objective Validator]
+    You[You — Final Authority]
+    Agent_A --> Agent_B --> Tests --> You
 ```
-
----
-
-### 🐰 2.4 CodeRabbit — AI as the Review Layer
 
 🔗 [CodeRabbit Docs](https://docs.coderabbit.ai/)
+</details>
 
-```
-Developer/Agent writes code → PR/diff
-        ↓
- CodeRabbit analyzes: bugs · security · quality · standards
-        ↓
-      Fix
-```
+<details>
+<summary><strong>🧵 1.5 — Graphiti: Temporal Knowledge-Graph Memory</strong></summary>
 
-**Why it matters:** AI agents produce large diffs *fast* — faster than a human can review. A second AI as reviewer creates a healthy separation of duties:
-
-```
-Agent A → Builder
-Agent B → Reviewer
-Tests   → Objective validator
-You     → Final architectural authority
+```mermaid
+flowchart LR
+    subgraph Traditional RAG
+    D1[Documents] --> D2[Chunk] --> D3[Embed] --> D4[Vector DB] --> D5[Similarity Search]
+    end
 ```
 
----
-
-### 🧵 2.5 Graphiti — Temporal Knowledge-Graph Memory
-
-🔗 [Graphiti on GitHub](https://github.com/getzep/graphiti)
-
-Traditional RAG:
+```mermaid
+timeline
+    title Facts Change Over Time — Graphiti tracks WHEN
+    January : Database = MongoDB
+    March   : Database = PostgreSQL
+    June    : Database = Supabase
 ```
-Documents → Chunk → Embed → Vector DB → Similarity search → Retrieve
-```
-
-Graphiti instead builds a **temporally-aware knowledge graph** — it tracks not just facts, but *when* they were true and what changed:
-
-```
-January: Database = MongoDB
-March:   Database = PostgreSQL
-June:    Database = Supabase
-```
-
-A flat memory store might retrieve conflicting facts. A temporal graph asks: *what was true, when, and what's current?*
-
-**Token impact:**
 
 | Approach | Context sent |
 |---|---|
 | Dump entire project history | ~500,000 tokens |
-| Graphiti retrieves only relevant facts | ~3,000 tokens |
+| Graphiti — retrieve only relevant facts | ~3,000 tokens |
 
-> The goal isn't *more* context — it's *better* context.
+🔗 [Graphiti on GitHub](https://github.com/getzep/graphiti)
+</details>
 
----
-
-### 🧩 2.6 Prompt Engineering vs. Context Engineering
+<details>
+<summary><strong>🧩 1.6 — Prompt Engineering vs. Context Engineering</strong></summary>
 
 | | Prompt Engineering | Context Engineering |
 |---|---|---|
-| Focus | Instructions, roles, formats, examples | *Everything* the model sees |
-| Scope | One message | System prompt + history + files + tools + memory + test output |
-| Key question | "How do I phrase this?" | "What should the model receive *right now*?" |
+| Focus | Instructions, roles, formats | *Everything* the model sees |
+| Scope | One message | System prompt + history + files + tools + memory |
+| Key question | "How do I phrase this?" | "What should the model receive **right now**?" |
 
-**Analogy:**
-- Prompt engineering = writing good instructions for an employee.
-- Context engineering = giving that employee the right files, tools, and history — without burying them in noise.
+> Prompt engineering = writing good instructions for an employee.
+> Context engineering = giving them the right files, tools, and history — without burying them in noise.
+</details>
 
----
+<details>
+<summary><strong>🔌 1.7 — MCP: Model Context Protocol</strong></summary>
 
-### 🔌 2.7 MCP — Model Context Protocol
-
-```
-AI Model
-   │
-   ▼
-  MCP
-   ├── Database
-   ├── GitHub
-   ├── Filesystem
-   ├── Browser
-   ├── Documentation
-   └── Runtime verification (Reticle)
+```mermaid
+flowchart TD
+    M[AI Model] --> MCP((MCP))
+    MCP --> DB[(Database)]
+    MCP --> GH[GitHub]
+    MCP --> FS[Filesystem]
+    MCP --> BR[Browser]
+    MCP --> Docs[Documentation]
+    MCP --> RT[Runtime Verification<br/>Reticle]
 ```
 
-Instead of copy-pasting logs/DB output/docs into a prompt, the agent **retrieves on demand**.
+> ⚠️ More tools ≠ smarter agent. 50 tools when 3 are needed → tool-selection confusion + wasted context on unused schemas.
 
-⚠️ **Warning:** More tools ≠ smarter agent. 50 tools when only 3 are needed causes tool-selection confusion and burns context on unused tool descriptions.
-
+```mermaid
+flowchart LR
+    T[Task: Frontend bug] --> E1["✅ Filesystem"]
+    T --> E2["✅ Terminal"]
+    T --> E3["✅ Browser"]
+    T -.-> D1["❌ DB Admin"]
+    T -.-> D2["❌ AWS Infra"]
+    T -.-> D3["❌ Kubernetes"]
 ```
-TASK: Frontend bug
-✅ Enable: Filesystem, Terminal, Browser, relevant docs
-❌ Disable: DB admin, AWS infra, Payments, Kubernetes
+</details>
+
+<details>
+<summary><strong>🦙 1.8 — Ollama: Local & Open Models</strong></summary>
+
+```mermaid
+flowchart TD
+    Req[User Request] --> Class{Task Classifier}
+    Class -->|Simple| Local[Local / Cheap Model — Ollama]
+    Class -->|Complex| Frontier[Frontier Model]
 ```
 
----
-
-### 🦙 2.8 Ollama — Local & Open Models
+Route: classification, summarization, embeddings → local. Architecture, hard debugging → frontier.
 
 🔗 [Ollama on GitHub](https://github.com/ollama/ollama)
+</details>
 
-```
-Your App → Ollama → Local Model
-```
+<details>
+<summary><strong>🤖 1.9 — Cline & Roo Code: Open-Source Autonomous Agents</strong></summary>
 
-**Model routing / tiering strategy:**
-
+```mermaid
+flowchart TD
+    A[User Task] --> B[Planner / Reasoning]
+    B --> C[Tool Selection]
+    C --> D[Read Files]
+    D --> E[Modify Files]
+    E --> F[Run Command]
+    F --> G[Observe Result]
+    G --> H[Update Context]
+    H --> C
 ```
-Simple tasks (classification, summarizing, embeddings) → Cheap/local model
-Complex tasks (architecture, hard debugging)            → Frontier model
-```
-
-```
-User request → Task classifier → Simple? 
-     YES → Local/cheap model
-     NO  → Frontier model
-```
-
----
-
-### 🤖 2.9 Cline & Roo Code — Open-Source Autonomous Agents
 
 🔗 [Cline](https://github.com/cline/cline) · [Roo Code](https://github.com/samhvw8/Roo-Cline)
+</details>
 
-Study their **architecture**, not just "which is best":
+<details>
+<summary><strong>🏗️ 1.10 — Full Modern Architecture (assembled)</strong></summary>
 
-```
-User task → Planner/reasoning → Tool selection
-   → Read files → Modify files → Run command
-   → Observe result → Update context → Continue
-```
-
-This loop *is* the definition of an agent.
-
----
-
-### 🏗️ 2.10 Full Modern Architecture
-
-```
-                    USER
-                      │
-                      ▼
-              TASK / SPEC
-                      │
-                      ▼
-                  PLANNER
-                      │
-                      ▼
-        CONTEXT RETRIEVAL (files, docs, memory/graph)
-                      │
-                      ▼
-               CODING AGENT
-                      │
-        ┌─────────────┼──────────────┐
-        ▼             ▼              ▼
-      Files       Terminal        Browser
-        └─────────────┼──────────────┘
-                      ▼
-              VERIFICATION
-        (Tests · Build · Runtime · Review)
-                      │
-                 Pass / Fail
-              ┌───────┴───────┐
-            PASS             FAIL → loop back to Agent
-              ▼
-             DONE
+```mermaid
+flowchart TD
+    U[User] --> TS[Task / Spec]
+    TS --> P[Planner]
+    P --> CR["Context Retrieval<br/>files · docs · memory graph"]
+    CR --> AG[Coding Agent]
+    AG --> Files
+    AG --> Terminal
+    AG --> Browser
+    Files --> V[Verification<br/>Tests · Build · Runtime · Review]
+    Terminal --> V
+    Browser --> V
+    V -->|Fail| AG
+    V -->|Pass| Done["✅ Done"]
 ```
 
 **Old workflow:** `Prompt → Answer`
-**Current workflow:** `Prompt → Agent → Tools → Environment → Feedback → Verification → Updated Context → Agent...`
+**New workflow:** `Prompt → Agent → Tools → Environment → Feedback → Verification → Updated Context → Agent…`
+</details>
+
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-## 3. Part II — The Token Optimization Framework
+## 2. ⚙️ The Token Optimization Framework
 
-> **Optimization target = Maximum verified work per token**
-> = correct implementation + right context + targeted tools + automated verification − wasted exploration & retries
+> **Optimization target:** Maximum verified work per token = correct implementation + right context + targeted tools + automated verification **−** wasted exploration & retries.
 
-The golden rule:
-
-```
-❌ Don't minimize tokens blindly.
-✅ Minimize UNNECESSARY tokens and UNNECESSARY iterations.
+```mermaid
+flowchart LR
+    A["❌ Minimize tokens blindly"] -.wrong goal.-> X[Vague prompt → 10 retries]
+    B["✅ Minimize UNNECESSARY tokens/iterations"] --> Y[Precise prompt → 1 success]
 ```
 
-A longer, precise prompt that prevents 5 failed attempts is cheaper than a short vague one that triggers 10 retries.
+<details>
+<summary><strong>✅ 2.1 — Small Habits That Save Real Tokens</strong></summary>
 
----
-
-### ✅ 3.1 Small Habits That Save Real Tokens
-
-**A. Say it once, clearly** — repeating "be careful, do it well, use best practices" five different ways burns tokens without adding operational meaning.
-
-**B. Replace vague adjectives with measurable conditions**
+- **Say it once, clearly.** Repeating "be careful / do it well / best practices" five ways adds tokens, not clarity.
+- **Replace vague adjectives with measurable conditions:**
 
 | ❌ Vague | ✅ Measurable |
 |---|---|
-| "Make it production ready" | "Typecheck passes, lint passes, tests pass, build succeeds, errors handled" |
+| "Make it production ready" | "Typecheck passes · lint passes · tests pass · build succeeds · errors handled" |
 
-**C. Don't ask for a full repo read** — use **progressive context expansion**:
+- **Don't request a full-repo read** — use progressive context expansion:
 
+```mermaid
+flowchart LR
+    A[Task] --> B[Relevant File]
+    B --> C[Its Imports / Dependencies]
+    C --> D[Related Tests]
+    D -.only if needed.-> E[Expand Further]
 ```
-Task → Relevant file → Its imports/dependencies → Related tests
-      → Expand ONLY if truly necessary
-```
+</details>
 
----
+<details>
+<summary><strong>🧱 2.2 — The Six-Layer Prompt Structure</strong></summary>
 
-### 🧱 3.2 The Six-Layer Prompt Structure
-
-```
-1. OBJECTIVE     — what exactly needs to happen
-2. SCOPE         — which areas/files are involved
-3. CONSTRAINTS   — what must NOT change
-4. EXECUTION     — inspect → plan → implement incrementally → validate
-5. VERIFICATION  — typecheck, lint, tests, build, runtime
-6. STOP CONDITION — exact criteria for "done" (prevents scope creep)
-```
-
-> **Critical addition:** "Do not continue making unrelated improvements after completion." Without this, agents wander into "Oh, I also noticed..." territory — more files, more tokens, more risk.
-
----
-
-### 🪜 3.3 Plan Once, Execute in Small Verified Steps
-
-```
-❌ "Build the complete application" 
-   → reads 100 files → huge plan → edits 50 files → 30 build errors → re-reads everything
-
-✅ Phase 1: Understand architecture (save findings)
-   Phase 2: Create implementation plan (save plan)
-   Phase 3: Execute Task 1 → Test
-   Phase 4: Execute Task 2 → Test
-   Phase 5: Integration + production build
+```mermaid
+flowchart TD
+    L1[1. Objective — what must happen] --> L2[2. Scope — files/areas involved]
+    L2 --> L3[3. Constraints — what must NOT change]
+    L3 --> L4[4. Execution — inspect → plan → implement → validate]
+    L4 --> L5[5. Verification — typecheck/lint/tests/build/runtime]
+    L5 --> L6[6. Stop Condition — exact 'done' criteria]
 ```
 
-Each phase produces a **compact artifact**, e.g.:
+> Add explicitly: *"Do not continue making unrelated improvements after completion."* Prevents "Oh, I also noticed…" scope creep.
+</details>
 
+<details>
+<summary><strong>🪜 2.3 — Plan Once, Execute in Small Verified Steps</strong></summary>
+
+```mermaid
+flowchart TD
+    P1[Phase 1: Understand architecture] --> P2[Phase 2: Implementation plan]
+    P2 --> P3[Phase 3: Execute Task 1 → Test]
+    P3 --> P4[Phase 4: Execute Task 2 → Test]
+    P4 --> P5[Phase 5: Integration + Production Build]
 ```
+
+**Compact checkpoint artifact example:**
+```text
 CURRENT PROJECT STATE
 Architecture: Next.js + Node API + PostgreSQL
 Current task: Implement profile editing
@@ -401,19 +353,18 @@ Current failure: Upload returns 413
 Relevant files: src/api/profile.ts, src/services/upload.ts
 Next step: Inspect upload size middleware
 ```
+</details>
 
----
-
-### 🧠 3.4 Solving "The AI Forgot the Context" — Four Root Causes
+<details>
+<summary><strong>🧠 2.4 — Solving "AI Forgot the Context" (4 root causes)</strong></summary>
 
 | Problem | Symptom | Fix |
 |---|---|---|
-| **A. Context overflow** | Conversation too large | **Compaction** — compress history into goals, decisions, unresolved issues, state |
-| **B. Buried info** | Important rule lost in noise | Externalize into `AGENTS.md`, `ARCHITECTURE.md`, `DECISIONS.md` |
-| **C. Drifting assumptions** | Agent silently swaps Redis for RabbitMQ | Maintain a **decision log** marked `LOCKED` |
-| **D. Unclear current task** | Agent loses the thread mid-task | Maintain a **working memory object** (JSON) with goal/status/next action |
+| **A. Context overflow** | Conversation too large | **Compaction** — compress into goals/decisions/state |
+| **B. Buried info** | Key rule lost in noise | Externalize into `AGENTS.md` / `ARCHITECTURE.md` / `DECISIONS.md` |
+| **C. Drifting assumptions** | Silent swap of Redis → RabbitMQ | Maintain a **decision log** marked `LOCKED` |
+| **D. Unclear current task** | Agent loses the thread | Maintain a **working-memory object** |
 
-**Example working memory object:**
 ```json
 {
   "goal": "Implement OAuth callback",
@@ -425,145 +376,124 @@ Next step: Inspect upload size middleware
   "blockers": []
 }
 ```
+</details>
 
----
+<details>
+<summary><strong>🗂️ 2.5 — Three-Tier Context Architecture</strong></summary>
 
-### 🗂️ 3.5 Three-Tier Context Architecture
-
+```mermaid
+flowchart TD
+    subgraph T1["1. Permanent Context — rarely changes"]
+        A1[AGENTS.md<br/>stack · conventions · commands · security]
+    end
+    subgraph T2["2. Project Knowledge — changes occasionally"]
+        A2[ARCHITECTURE.md · DECISIONS.md · API.md · DATABASE.md]
+    end
+    subgraph T3["3. Working State — changes constantly"]
+        A3[PROJECT_STATE.md<br/>current task · failure · next step]
+    end
+    T1 --> T2 --> T3
 ```
-1. PERMANENT CONTEXT  (rarely changes)
-   AGENTS.md — stack, architecture, conventions, commands, security rules
+</details>
 
-2. PROJECT KNOWLEDGE  (changes occasionally)
-   ARCHITECTURE.md · DECISIONS.md · API.md · DATABASE.md
+<details>
+<summary><strong>🔌 2.6 — Designing MCP Tools for Low Token Usage</strong></summary>
 
-3. WORKING STATE      (changes constantly)
-   PROJECT_STATE.md — current task, completed work, failure, next step
-```
-
-```
-Agent starts → Load permanent instructions
-             → Retrieve relevant project knowledge
-             → Load current working state
-             → Begin work
-```
-
----
-
-### 🔌 3.6 Designing MCP Tools for Low Token Usage
-
-MCP itself does **not** magically save tokens — *how you design tools* does.
-
-```
-❌ get_everything() → 50,000 tokens dumped
-
-✅ get_file(path)
-✅ search_code(query)
-✅ get_dependency_graph(file)
-✅ get_test_failure(test_name)
-✅ get_recent_logs(service, limit)
-✅ get_database_schema(tables)
+```mermaid
+flowchart LR
+    Bad["❌ get_everything()"] --> BadOut[50,000 tokens dumped]
+    Good1["✅ get_file(path)"]
+    Good2["✅ search_code(query)"]
+    Good3["✅ get_test_failure(name)"]
+    Good4["✅ get_recent_logs(service, limit)"]
 ```
 
-Each tool answers **one narrow question** → small, high-signal answers instead of a haystack the model must search itself.
+> ⚠️ Every extra tool definition costs context space *before* it's ever called. Scope agents to the minimum tool set the task needs.
+</details>
 
-> ⚠️ More MCP servers ≠ smarter agent. Every extra tool definition costs context space *before* it's ever called. Scope agents to the minimum tool set the task needs.
+<details>
+<summary><strong>✍️ 2.7 — Prompting Reduces Exploration</strong></summary>
 
----
-
-### ✍️ 3.7 Prompting Reduces Exploration (and Total Tokens)
-
-```
-❌ "Implement authentication."
-   → AI wonders: JWT? Sessions? OAuth? Redis? NextAuth? Clerk?
-   → inspects 50 files just to decide
-```
-
-```
-✅ Objective: Add password-reset functionality.
-   Existing architecture: JWT auth, PostgreSQL, existing email service.
-   Scope: reset-request endpoint, expiring token, existing email
-          template, confirmation endpoint.
-   Do not: replace auth architecture, add new email provider.
-   Validation: tests for expired/invalid token, typecheck, lint, build.
+```mermaid
+flowchart TD
+    A["❌ 'Implement authentication.'"] --> B{AI must guess}
+    B --> C[JWT? Sessions? OAuth? Redis? NextAuth?]
+    C --> D[Inspects 50 files just to decide]
 ```
 
-The second prompt is *longer* but eliminates thousands of tokens of blind exploration.
-
-**Also add:**
-- "Search the codebase for an existing implementation before creating a new one" → prevents duplicated utilities and future bloat.
-- "Only expand investigation when a dependency is unclear or an integration issue appears" → conditional discovery instead of always-deep-dive.
-
----
-
-### 🧪 3.8 The Verification Pyramid — Cheapest Check First
-
-```
-Level 1: Static verification   (typecheck, lint)         ⚡ fastest
-Level 2: Unit tests             (isolated logic)
-Level 3: Integration tests      (API + service + DB)
-Level 4: End-to-end tests       (full user flow)
-Level 5: Production build
-Level 6: Runtime verification   (console/network/DOM — via Reticle)
+```mermaid
+flowchart TD
+    E["✅ Objective + existing architecture<br/>+ scope + constraints + validation"] --> F[Agent knows exactly what to build]
 ```
 
-```
-IMPLEMENT → TYPECHECK → LINT → TARGETED TEST
-   → INTEGRATION TEST → PRODUCTION BUILD → RUNTIME/E2E → DONE
-        (any FAIL → inspect → minimal fix → re-run FAILED check first)
+**Also add:** "Search for an existing implementation before creating one" · "Only expand investigation when genuinely necessary."
+</details>
+
+<details>
+<summary><strong>🧪 2.8 — The Verification Pyramid</strong></summary>
+
+```mermaid
+flowchart TD
+    L1["Level 1 — Static (typecheck, lint) ⚡ fastest"] --> L2[Level 2 — Unit Tests]
+    L2 --> L3[Level 3 — Integration Tests]
+    L3 --> L4[Level 4 — End-to-End Tests]
+    L4 --> L5[Level 5 — Production Build]
+    L5 --> L6[Level 6 — Runtime Verification via Reticle]
 ```
 
 > Run the **cheapest relevant test first** — don't rerun the whole suite after a one-line change.
+</details>
 
----
+<details>
+<summary><strong>🛑 2.9 — Failure-Handling Protocol & the "Two-Failure Rule"</strong></summary>
 
-### 🛑 3.9 Failure-Handling Protocol & the "Two-Failure Rule"
-
+```mermaid
+flowchart TD
+    A[Validation Fails] --> B[Read exact error]
+    B --> C[Identify smallest likely cause]
+    C --> D[Inspect only relevant files]
+    D --> E[Apply smallest justified fix]
+    E --> F[Re-run failed validation]
+    F --> G{Same failure again?}
+    G -->|No| H[✅ Continue]
+    G -->|Yes| I[🛑 STOP — reassess assumption / architecture / environment]
 ```
-When validation fails:
-1. Read the EXACT error
-2. Identify the smallest likely cause
-3. Inspect only relevant files
-4. Apply the smallest justified fix
-5. Re-run the failed validation first
-6. Do NOT rewrite unrelated working code
-7. If the SAME failure occurs twice → STOP patching blindly
-```
+</details>
 
-**Two-Failure Rule:** if a fix fails twice, the agent should *reassess the underlying assumption* (architecture, environment, test expectation) instead of continuing to patch — this is what prevents infinite token-burning loops.
+<details>
+<summary><strong>🏛️ 2.10 — Five Big Architectural Changes</strong></summary>
 
----
-
-### 🏛️ 3.10 The Five Big Architectural Changes
-
-```
-1. Retrieval-based context   → search/retrieve relevant files, not the whole repo
-2. Persistent project memory → AGENTS.md / DECISIONS.md instead of chat history
-3. Context compaction        → summarize old context into a compact checkpoint
-4. Specialized subagents     → isolate Research/Test/Debug work; parent gets only the summary
-5. Model routing             → cheap model for simple subtasks, strong model for hard ones
-```
-
-```
-MAIN AGENT
-   ├── Architecture subagent
-   ├── Codebase research subagent
-   ├── Testing subagent
-   └── Debugging subagent
-       (each returns only a summary to the parent)
+```mermaid
+flowchart LR
+    A[1. Retrieval-based context] 
+    B[2. Persistent project memory]
+    C[3. Context compaction]
+    D[4. Specialized subagents]
+    E[5. Model routing]
 ```
 
----
-
-### 📜 3.11 Master Instruction Template
-
+```mermaid
+flowchart TD
+    Main[Main Agent] --> Arch[Architecture Subagent]
+    Main --> Research[Codebase Research Subagent]
+    Main --> Test[Testing Subagent]
+    Main --> Debug[Debugging Subagent]
+    Arch -.summary only.-> Main
+    Research -.summary only.-> Main
+    Test -.summary only.-> Main
+    Debug -.summary only.-> Main
 ```
+</details>
+
+<details>
+<summary><strong>📜 2.11 — Master Instruction Template</strong></summary>
+
+```text
 # OBJECTIVE
 Complete the task while minimizing unnecessary exploration and retries.
 
 # DISCOVERY
-Inspect only what's relevant. Search for existing implementations
-before creating new ones.
+Inspect only what's relevant. Search for existing implementations first.
 
 # PLANNING
 Concise plan: target files, expected change, validation method per step.
@@ -589,122 +519,125 @@ Typecheck → Lint → Targeted tests → Integration → Build → Runtime
 Criteria met + tests pass + build succeeds + issues reported honestly.
 No unrelated "extra improvements" after completion.
 ```
+</details>
+
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-## 4. Part III — Security Testing, Developer Knowledge & Anti-Vibe-Coding
+## 3. 🛡️ Security Testing, Developer Knowledge & Anti-Vibe-Coding
 
-### 🛡️ 4.1 Pentesting with Strix — Scoped, Not Open-Ended
-
-🔗 [Strix Documentation](https://docs.strix.ai/)
-
-Strix is an autonomous AI pentesting tool that can test codebases/apps, validate findings with proof-of-concepts, and integrate into CI/CD.
+<details>
+<summary><strong>🛡️ 3.1 — Pentesting with Strix: Scoped, Not Open-Ended</strong></summary>
 
 > ⚠️ Only run it against systems you **own or are explicitly authorized to test.**
 
-```
-Developer understands app → Define scope + rules of engagement
-   → Run targeted assessment → Review validated finding
-   → Understand root cause → Minimal fix → Run existing tests
-   → Retest finding → Production build
+```mermaid
+flowchart TD
+    A[Developer understands app] --> B[Define scope + rules of engagement]
+    B --> C[Run targeted assessment]
+    C --> D[Review validated finding]
+    D --> E[Understand root cause]
+    E --> F[Minimal fix]
+    F --> G[Run existing tests]
+    G --> H[Retest finding]
+    H --> I[Production build]
 ```
 
-**Scoped instruction example:**
-```
+```text
 Target: local development application
 Scope: auth flows, user-owned resources, relevant API endpoints
 Focus: broken access control, IDOR, auth bypass, input validation, JWT handling
 Constraints: authorized environment only, reproducible findings only
 ```
 
-> Principle: **Don't tell an AI pentester "hack everything."** Give it a bounded attack surface and a clear objective — this reduces wasted tool calls and irrelevant noise.
+🔗 [Strix Documentation](https://docs.strix.ai/)
+</details>
 
----
+<details>
+<summary><strong>🧠 3.2 — Vibe Coding vs. AI-Assisted Engineering</strong></summary>
 
-### 🧠 4.2 Vibe Coding vs. AI-Assisted Engineering
+```mermaid
+flowchart TD
+    subgraph Vibe["❌ Vibe Coding"]
+    V1["I need authentication."] --> V2[AI figures everything out]
+    V2 --> V3[AI picks architecture, writes 20 files]
+    V3 --> V4[Something breaks]
+    V4 --> V5["'AI, fix everything' — loop"]
+    end
 
-```
-VIBE CODING                          AI-ASSISTED ENGINEERING
-"I need authentication."             Problem: OAuth callback fails
-   ↓                                    ↓
-AI figures everything out            Likely area: auth config
-   ↓                                    ↓
-AI picks architecture, writes        Task: inspect these specific
-20 files                             files and verify the hypothesis
-   ↓                                    ↓
-Something breaks                     Targeted investigation
-   ↓                                    ↓
-"AI, fix everything" (loop)          Small fix → targeted verification
-```
-
-> **A skilled programmer reduces AI token usage simply by knowing what question to ask.** Developer knowledge acts as a *context compressor* — it collapses a huge solution space into a precise, targeted task.
-
----
-
-### 📚 4.3 Why Knowing Good Repos/Architecture Reduces AI Dependency
-
-Without prior knowledge, "build authentication" forces the AI to explore: JWT vs sessions vs OAuth vs which DB schema vs which library — expensive discovery.
-
-With known architecture (e.g., "Next.js + Auth.js + PostgreSQL + Prisma"), the task becomes:
-```
-Use the EXISTING authentication architecture.
-Implement: password-reset flow only.
-Reuse: DB access, email service, validation pattern.
-Do not modify: login flow, session architecture.
+    subgraph Eng["✅ AI-Assisted Engineering"]
+    E1[Problem: OAuth callback fails] --> E2[Likely area: auth config]
+    E2 --> E3[Task: inspect specific files, verify hypothesis]
+    E3 --> E4[Targeted investigation]
+    E4 --> E5[Small fix → targeted verification]
+    end
 ```
 
-**Build a mental library, not a repo collection:**
+> A skilled programmer reduces AI token usage simply by knowing what question to ask. Developer knowledge is a **context compressor**.
+</details>
+
+<details>
+<summary><strong>📚 3.3 — Why Knowing Good Repos/Architecture Reduces AI Dependency</strong></summary>
+
+```mermaid
+mindmap
+  root((Mental<br/>Library))
+    Authentication
+      established patterns
+    Background Jobs
+      queue/worker patterns
+    Payments
+      official provider architecture
+    Real-time
+      WebSocket/pub-sub
+    Search
+      full-text vs vector
+    Testing
+      unit/integration/E2E
+    Security
+      OWASP categories
 ```
-Authentication      → know established patterns
-Background jobs     → know queue/worker patterns
-Payments            → know official provider architecture
-Real-time           → know WebSocket/pub-sub patterns
-Search              → know full-text vs vector search
-Testing             → know unit/integration/E2E tooling
-Security            → know OWASP categories + tools
-```
+</details>
 
----
+<details>
+<summary><strong>🪜 3.4 — The AI Escalation Ladder</strong></summary>
 
-### 🪜 4.4 The AI Escalation Ladder — Use the Cheapest Sufficient Method
-
-```
-Level 0 — You already know it        → just code it (0 tokens)
-Level 1 — Documentation lookup       → read official docs
-Level 2 — Code search                → search the repo for a similar pattern
-Level 3 — Reference implementation   → find a trusted example
-Level 4 — AI targeted assistance     → explain error / compare approaches
-Level 5 — Coding agent               → multi-file, clear requirements
-Level 6 — Autonomous agent loop      → bounded scope + reliable tests
-```
-
-> Don't jump straight to Level 6 for everything. If the answer's in one doc page, using a 10-repository agent search is wasteful.
-
----
-
-### ✅ 4.5 Five Questions to Answer *Before* Calling an Agent
-
-```
-1. Problem:            what exactly is broken?
-2. Expected behavior:  what should happen instead?
-3. Likely affected area: where is the bug probably located?
-4. Preferred approach: what's the likely correct fix?
-5. Verification:       how will I know it actually works?
-```
-
-```
-Do I understand the problem?  NO → investigate first (docs/logs)
-Do I know the affected area?  NO → code search / logs / docs
-Can I define expected behavior? NO → write acceptance criteria
-Can I verify the result?      NO → build tests first
-                               YES to all → THEN use AI
+```mermaid
+flowchart TD
+    L0["Level 0 — You already know it → just code it (0 tokens)"]
+    L1[Level 1 — Documentation lookup]
+    L2[Level 2 — Code search]
+    L3[Level 3 — Reference implementation]
+    L4[Level 4 — AI targeted assistance]
+    L5[Level 5 — Coding agent]
+    L6[Level 6 — Autonomous agent loop]
+    L0 --> L1 --> L2 --> L3 --> L4 --> L5 --> L6
 ```
 
----
+> Don't jump straight to Level 6 for everything.
+</details>
 
-### ⚖️ 4.6 The Formula
+<details>
+<summary><strong>✅ 3.5 — Five Questions Before Calling an Agent</strong></summary>
 
+```mermaid
+flowchart TD
+    Q1{Understand the problem?} -->|No| I1[Investigate first] --> Q1
+    Q1 -->|Yes| Q2{Know affected area?}
+    Q2 -->|No| I2[Code search / logs / docs] --> Q2
+    Q2 -->|Yes| Q3{Can define expected behavior?}
+    Q3 -->|No| I3[Write acceptance criteria] --> Q3
+    Q3 -->|Yes| Q4{Can verify the result?}
+    Q4 -->|No| I4[Build tests first] --> Q4
+    Q4 -->|Yes| U[✅ Use AI]
 ```
+</details>
+
+<details>
+<summary><strong>⚖️ 3.6 — The Formula</strong></summary>
+
+```text
 Developer Knowledge
    + Good Problem Definition
    + Existing Proven Architecture
@@ -717,44 +650,30 @@ No Understanding + "Build everything" + Huge context
    + Autonomous agent + No verification
    = Vibe coding ❌
 ```
+</details>
 
-AI is excellent at generating, transforming, searching, explaining, and refactoring. But **you** should still own: *what problem, why this approach, what must not break, how to verify success.*
-
----
-
-## 5. Part IV — The AI Model Landscape
-
-> ⚠️ **Honesty note:** exact GPU counts, cluster topology, power draw, and per-request energy use are **not publicly disclosed** by closed providers. Below separates *published pricing/specs* from *reasonable engineering framing*. Prices and models shift constantly — always check current provider docs before relying on figures.
-
-### 🧩 5.1 Model vs. Product — A Critical Distinction
-
-| Category | Examples |
-|---|---|
-| **Model families** | GPT, Claude, Gemini, Grok, DeepSeek, Qwen, Llama |
-| **Agentic products/platforms** (may use multiple models underneath) | Cursor, Lovable, Antigravity, Claude Code, Perplexity |
-| **Local runtime** (not a model itself) | Ollama |
-| **Hardware** | NVIDIA (H100/H200/Blackwell), TPU, NPU |
-
-```
-                     USER
-                       │
-                       ▼
-              AI PRODUCT / AGENT
-     (Cursor / Claude Code / Antigravity / Cline)
-                       │
-                       ▼
-                 MODEL ROUTER
-       ┌───────────────┼────────────────┐
-       ▼               ▼                ▼
-     GPT            Claude            Gemini
-       └───────────────┼────────────────┘
-                       ▼
-              GPU / TPU / AI CHIP
-```
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-### 🅰️ 5.2 OpenAI — GPT Family
+## 4. 🤖 The AI Model Landscape
+
+> ⚠️ Exact GPU counts, power draw, and per-request energy use are **not publicly disclosed**. Prices/models shift constantly — verify against current provider docs.
+
+```mermaid
+flowchart TD
+    U[User] --> Product["AI Product / Agent<br/>Cursor · Claude Code · Antigravity · Cline"]
+    Product --> Router{Model Router}
+    Router --> GPT[GPT family]
+    Router --> Claude[Claude family]
+    Router --> Gemini[Gemini family]
+    GPT --> HW[GPU / TPU / AI Chip]
+    Claude --> HW
+    Gemini --> HW
+```
+
+<details>
+<summary><strong>🅰️ 4.1 — OpenAI: GPT Family</strong></summary>
 
 | Model | Position | Notes |
 |---|---|---|
@@ -762,140 +681,100 @@ AI is excellent at generating, transforming, searching, explaining, and refactor
 | GPT-5.6 Terra | Balanced | Everyday multi-file coding |
 | GPT-5.6 Luna | Cheapest/fastest | Search, classification, summarization, routing |
 
-**Ranking:**
-- Raw capability: Sol > Terra > Luna
-- Cost efficiency: Luna > Terra > Sol
-- High-volume automation: Luna > Terra > Sol
+**Ranking:** Raw capability `Sol > Terra > Luna` · Cost efficiency `Luna > Terra > Sol`
+</details>
 
----
+<details>
+<summary><strong>🅱️ 4.2 — Anthropic: Claude Family</strong></summary>
 
-### 🅱️ 5.3 Anthropic — Claude Family
-
-```
-Fable / Mythos  → extreme frontier, long-running hard work
-Opus            → high-end complex reasoning/coding
-Sonnet          → balanced coding + agentic tool use (sweet spot)
-Haiku           → speed + low cost
+```mermaid
+flowchart TD
+    F["Fable / Mythos<br/>extreme frontier"] --> O[Opus<br/>high-end reasoning/coding]
+    O --> S["Sonnet<br/>⭐ balanced sweet spot"]
+    S --> H[Haiku<br/>speed + low cost]
 ```
 
 | Tier | Best for |
 |---|---|
 | Claude Fable 5 / Mythos 5 | Genuinely hard, long-running problems only |
 | Claude Opus 5 | Complex repos, deep architecture judgment |
-| **Claude Sonnet 5** | Everyday agentic coding — often the best quality/cost ratio |
+| **Claude Sonnet 5** | Everyday agentic coding — best quality/cost ratio |
 | Claude Haiku 4.5 | Cheap subagents, classification, routing |
 
-> Note (as of this writing): Claude Fable 5 and Claude Mythos 5 access was briefly suspended (June 12–July 1, 2026) for export-control compliance, then restored. See [Anthropic's statement](https://www.anthropic.com/news/fable-mythos-access) for the latest.
+> Note: Claude Fable 5 / Mythos 5 access was briefly suspended (Jun 12–Jul 1, 2026) for export-control compliance, then restored. See [Anthropic's statement](https://www.anthropic.com/news/fable-mythos-access).
 
-**Ranking:**
-- Max capability: Fable ≈ Mythos > Opus > Sonnet > Haiku
-- Best coding cost/performance: **Sonnet > Opus > Haiku > Fable/Mythos**
-- Long-running complex work: Fable/Mythos > Opus > Sonnet
+**Ranking:** Best coding cost/performance → **Sonnet > Opus > Haiku > Fable/Mythos**
+</details>
 
----
+<details>
+<summary><strong>🅲️ 4.3 — Google: Gemini Family</strong></summary>
 
-### 🅲️ 5.4 Google — Gemini Family
-
-Gemini's current strengths: long context, multimodal reasoning, agentic workflows, cost efficiency. Gemini 3.7 Flash supports **configurable thinking levels** (Low/Medium/High) — meaning you don't always need maximum reasoning:
-
-```
-Rename/refactor task  → Low thinking
-Normal coding          → Medium thinking
-Complex debugging      → High thinking
+```mermaid
+flowchart LR
+    A[Rename/Refactor] --> Low[Low Thinking]
+    B[Normal Coding] --> Med[Medium Thinking]
+    C[Complex Debugging] --> High[High Thinking]
 ```
 
-Google's **Antigravity** platform is an agentic execution environment built around Gemini models — think "Gemini = intelligence engine, Antigravity = agent execution environment."
+Gemini 3.7 Flash: long context, multimodal, configurable thinking levels. **Antigravity** = Google's agentic execution layer built on Gemini.
+</details>
 
----
+<details>
+<summary><strong>🅳️ 4.4 — xAI Grok · 🅴️ DeepSeek · 🅵️ Qwen/Llama</strong></summary>
 
-### 🅳️ 5.5 xAI — Grok Family
+- **Grok 4.6** — strong long-context reasoning, competitive coding/agent use, available inside Cursor.
+- **DeepSeek** — Mixture-of-Experts: V4 Pro has 1.6T total params but only ~49B *active* per token.
 
-Grok 4.6 offers strong long-context reasoning and is competitive for coding/agent use; it's also one of the first-party model options inside Cursor.
-
----
-
-### 🅴️ 5.6 DeepSeek — Open-Weight, Mixture-of-Experts
-
-```
-DeepSeek V4 Pro:   1.6T total params, ~49B ACTIVE per token
-DeepSeek V4 Flash: 284B total params, ~13B ACTIVE per token
+```mermaid
+flowchart LR
+    Total["1.6T total parameters"] -->|MoE routing| Active["~49B ACTIVE per token"]
 ```
 
-**Mixture-of-Experts (MoE) concept:**
-```
-Huge total model → only SELECTED experts activate per token
-                 → smaller active compute than the "total size" suggests
-```
+- **Qwen / Llama** — open-weight ecosystem for self-hosting, fine-tuning, private deployment.
+</details>
 
-Demonstrates: you don't always need the most expensive closed model — an efficient model + a strong harness can rival pricier options.
+<details>
+<summary><strong>🅶️ 4.5 — Perplexity · Cursor · Lovable · Antigravity (Products, not models)</strong></summary>
 
----
+| Product | What it actually is |
+|---|---|
+| Perplexity | Search system + Sonar models + citations — not a coding-model substitute |
+| Cursor | Model orchestration layer — routes across GPT/Claude/Gemini/Grok/Composer |
+| Lovable | AI app-building product — great for MVPs, not deep custom architecture |
+| Antigravity | Google's agentic platform, built on Gemini |
+| Claude Code | Claude model + terminal + filesystem + planning + agent loop |
 
-### 🅵️ 5.7 Qwen & Llama — The Open-Model Ecosystem
+> Comparing "Claude vs. Cursor" is like comparing an engine to a car.
+</details>
 
-Best suited for self-hosting, fine-tuning, private deployment, and low-cost experimentation. Understand the *hierarchy* rather than memorizing every version:
+<details>
+<summary><strong>🏆 4.6 — Practical Tiering for Coding & Agentic Work</strong></summary>
 
-```
-Large frontier model → Large efficient model → Medium model
-     → Small model → Quantized local model
-```
-
----
-
-### 🅶️ 5.8 Perplexity — A Search System, Not a Coding Model
-
-Perplexity = model + retrieval + citations + research workflow (Sonar family). Best for research, documentation discovery, and source-grounded answers — **not** a raw coding-model substitute.
-
----
-
-### 🅷️ 5.9 Cursor, Lovable & Antigravity — Orchestration Layers
-
-**Cursor** = model orchestration layer, not a model itself. It routes across GPT/Claude/Gemini/Grok/its own Composer model based on cost/balance/intelligence settings. The real intelligence of "using Cursor" = model + repo indexing + context selection + terminal + agent loop + error feedback — a weaker model with excellent context/verification can beat a stronger model given bad prompts and no tests.
-
-**Lovable** = AI application-building product, best for prototypes/MVPs; deep custom architecture eventually needs a full IDE workflow.
-
-**Antigravity** = Google's agentic platform layered on Gemini models.
-
-**Claude Code** = Claude model + terminal + filesystem + planning + agent loop + project instructions (AGENTS.md-style).
-
-> **Key takeaway:** comparing "Claude vs. Cursor" is like comparing an engine to a car — one is a model, the other is a system built around models.
-
----
-
-### ⚙️ 5.10 What "Power" Actually Means (6 Different Axes)
-
-```
-1. Raw reasoning     — math, logic, novel problems
-2. Coding ability    — generation, debugging, navigation
-3. Agentic ability   — tool use, planning, recovery
-4. Context capacity  — how much info it can process
-5. Speed             — tokens/sec, latency
-6. Cost efficiency   — verified work ÷ (money + tokens + time)
+```mermaid
+flowchart TD
+    subgraph S["Tier S — Hardest Autonomous Engineering"]
+    S1[Claude Fable/Mythos 5]
+    S2[GPT-5.6 Sol]
+    S3[Claude Opus 5]
+    end
+    subgraph A["Tier A — Everyday Sweet Spot"]
+    A1[Claude Sonnet 5]
+    A2[GPT-5.6 Terra]
+    A3[Gemini 3.7 Flash]
+    A4[Grok 4.6]
+    end
+    subgraph B["Tier B — High-Volume / Cheap"]
+    B1[GPT-5.6 Luna]
+    B2[Claude Haiku 4.5]
+    B3[Gemini Flash tiers]
+    end
 ```
 
-There is no single "most powerful" model — only the best fit for a given axis and task.
+> A more capable model can use **fewer total tokens** overall — a weak model failing 4× can cost more than a strong model succeeding once. Optimize for **cost per verified successful task**.
+</details>
 
----
-
-### 🏆 5.11 Practical Tiering for Coding & Agentic Work
-
-```
-TIER S — Hardest autonomous engineering
-  Claude Fable 5 / Mythos 5, GPT-5.6 Sol, Claude Opus 5, Gemini frontier tiers
-  → complex repos, hard architecture/debugging, high-consequence work
-
-TIER A — Best everyday professional coding (the "sweet spot")
-  Claude Sonnet 5, GPT-5.6 Terra, Gemini 3.7 Flash, Grok 4.6, DeepSeek V4 Flash
-
-TIER B — High-volume / cost-efficient
-  GPT-5.6 Luna, Claude Haiku 4.5, Gemini Flash tiers, DeepSeek V4 Flash, Qwen efficient models
-```
-
-**Important nuance:** a *more capable* model can sometimes use **fewer total tokens** — because a weak model failing 4 times (1M+ tokens across retries) can cost more than a strong model succeeding once (~200K tokens). Optimize for **cost per verified successful task**, not cost per million tokens.
-
----
-
-### 🖥️ 5.12 Hardware Layer (What We Actually Know)
+<details>
+<summary><strong>🖥️ 4.7 — Hardware Layer</strong></summary>
 
 | Chip | Memory | Bandwidth | Notes |
 |---|---|---|---|
@@ -905,119 +784,94 @@ TIER B — High-volume / cost-efficient
 | DGX B200 (8×GPU) | 1,440 GB total | 64 TB/s aggregate | ~14.3 kW system power |
 | GB200 NVL72 (72×GPU) | 13.4 TB total | 576 TB/s | rack-scale AI system |
 
-```
-CPU  → application logic, orchestration, scheduling (flexible, less parallel)
-GPU  → massively parallel matrix ops — training & inference (NVIDIA's core strength)
-TPU  → Google's custom tensor hardware, powers much of Gemini
-NPU  → small local AI on laptops/phones/edge devices
+```mermaid
+flowchart LR
+    CPU[CPU — orchestration, flexible, less parallel]
+    GPU[GPU — massively parallel matrix ops]
+    TPU[TPU — Google's tensor hardware, powers Gemini]
+    NPU[NPU — small local AI, laptops/phones]
 ```
 
-**What we genuinely don't know:** exact watts-per-request for any specific GPT/Claude/Gemini call — that depends on GPU count, batch size, MoE routing, precision, context length, and utilization, none of which providers disclose per-request. Any specific "X model uses Y watts" claim online should be treated skeptically.
+> We genuinely **don't know** exact watts-per-request for any specific model call — treat any such public claim skeptically.
+</details>
 
-**Why long context isn't free:** 1M-token context windows require much larger KV-cache/attention memory — sending huge context by default (rather than retrieving what's relevant) hurts cost, latency, *and* memory efficiency.
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-### 🥇 5.13 Overall Recommendation Snapshot
+## 5. ✅ Master Cheat Sheet
 
-| Use case | Best pick |
-|---|---|
-| Hardest frontier engineering | GPT-5.6 Sol |
-| Extreme long-running agent work | Claude Fable 5 / Mythos 5 (only when justified) |
-| **Everyday coding balance** | **Claude Sonnet 5** |
-| Cheap high-volume tasks | GPT-5.6 Luna |
-| Cheap agentic + multimodal | Gemini 3.7 Flash |
-| Open/self-hosted ecosystem | DeepSeek V4 / Qwen |
-
-```
-CHEAP MODEL     → search / classify / summarize
-MID-TIER MODEL  → normal coding
-FRONTIER MODEL  → architecture / hard debugging
-TESTS + BUILD   → verify
-RUNTIME TOOLS   → observe reality
-YOU             → final engineering judgment
-```
-
----
-
-## 6. Master Cheat Sheet
-
-### 🎯 Token-Saving Checklist
-- [ ] Write objective, scope, constraints, execution steps, validation, stop condition — every time
-- [ ] Replace vague words ("robust", "production-ready") with measurable pass/fail criteria
-- [ ] Use progressive context expansion, not full-repo dumps
+- [ ] Objective, scope, constraints, execution, validation, stop condition — every prompt
+- [ ] Replace vague words with measurable pass/fail criteria
+- [ ] Progressive context expansion, not full-repo dumps
 - [ ] Externalize stable knowledge into `AGENTS.md` / `ARCHITECTURE.md` / `DECISIONS.md`
-- [ ] Compact long conversations into a state checkpoint instead of carrying full history
-- [ ] Enable only the MCP tools/servers relevant to the current task
-- [ ] Route simple subtasks to cheap/local models; save frontier models for hard problems
-- [ ] Run the cheapest validation first (typecheck → lint → targeted test → build → runtime)
-- [ ] Apply the "two-failure rule" — stop patching blindly, reassess assumptions
-- [ ] Define an explicit stop condition so the agent doesn't scope-creep after "done"
+- [ ] Compact long conversations into a state checkpoint
+- [ ] Enable only the MCP tools relevant to the current task
+- [ ] Route simple subtasks to cheap/local models
+- [ ] Cheapest validation first: typecheck → lint → test → build → runtime
+- [ ] Apply the "two-failure rule" — stop patching blindly
+- [ ] Explicit stop condition — no post-completion scope creep
 
-### 🧠 Before Calling an Agent
+```mermaid
+flowchart TD
+    Q1[Exact problem?] --> Q2[Expected behavior?]
+    Q2 --> Q3[Likely location?]
+    Q3 --> Q4[Preferred approach?]
+    Q4 --> Q5[How to verify?]
+    Q5 --> Go["🚀 Now call the agent"]
 ```
-1. What's the exact problem?
-2. What's the expected behavior?
-3. Where is it likely located?
-4. What's the preferred approach?
-5. How will I verify the fix?
-```
+
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-## 7. Recommended Learning Path
+## 6. 🎓 Recommended Learning Path
 
-```
-Tier 1 — Understand agentic coding
-   → Cline, Roo Code, Reticle
-   Study: file inspection, tool selection, context maintenance,
-          command execution, error recovery, completion verification
-
-Tier 2 — Learn memory & context engineering
-   → Graphiti, Anthropic's context-engineering guidance
-   Study: vector retrieval, hybrid retrieval, knowledge graphs,
-          temporal data, compaction, context selection
-
-Tier 3 — Learn local/open models
-   → Ollama
-   Study: local inference, coding models, embeddings, model routing
-
-Tier 4 — Learn quality & review
-   → CodeRabbit, Reticle, test frameworks, browser automation, CI/CD
-   Study: generate → review → test → observe → fix
+```mermaid
+flowchart TD
+    T1["Tier 1: Agentic Coding<br/>Cline · Roo Code · Reticle"] --> T2["Tier 2: Memory & Context<br/>Graphiti · Context Engineering"]
+    T2 --> T3["Tier 3: Local Models<br/>Ollama"]
+    T3 --> T4["Tier 4: Quality & Review<br/>CodeRabbit · Tests · CI/CD"]
 ```
 
 **Hands-on build order:**
-```
+
 1. Install Ollama, experiment with local models
 2. Use an agent (Cline / Roo Code)
-3. Write a real AGENTS.md for a test project
+3. Write a real `AGENTS.md` for a test project
 4. Add MCP tools selectively
 5. Add Reticle for runtime verification
 6. Add automated tests
 7. Add CodeRabbit for review
 8. Try a Ralph-style implementation loop
 9. Later: add Graphiti or another memory layer
-```
 
-**If you implement only three things, prioritize:**
-1. `AGENTS.md` + persistent decision/architecture files
-2. Task checkpoints / context compaction for long-running work
-3. A strict implement → targeted test → failure-feedback loop
+> **If only three things:** `AGENTS.md` + decision files → checkpoints/compaction → strict implement→test→feedback loop.
+
+[⬆ Back to Navigate](#-navigate)
 
 ---
 
-### 🔗 Reference Links
-- [Reticle — GitHub](https://github.com/reticlehq/reticle)
-- [Graphiti — GitHub](https://github.com/getzep/graphiti)
-- [CodeRabbit — Docs](https://docs.coderabbit.ai/)
-- [Ollama — GitHub](https://github.com/ollama/ollama)
-- [Cline — GitHub](https://github.com/cline/cline)
-- [Roo Code — GitHub](https://github.com/samhvw8/Roo-Cline)
-- [Strix — Docs](https://docs.strix.ai/)
-- [Anthropic — Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-- [Model Context Protocol — Spec](https://modelcontextprotocol.io/)
+## 7. 🔗 Reference Links
+
+| Tool | Link |
+|---|---|
+| Reticle | https://github.com/reticlehq/reticle |
+| Graphiti | https://github.com/getzep/graphiti |
+| CodeRabbit | https://docs.coderabbit.ai/ |
+| Ollama | https://github.com/ollama/ollama |
+| Cline | https://github.com/cline/cline |
+| Roo Code | https://github.com/samhvw8/Roo-Cline |
+| Strix | https://docs.strix.ai/ |
+| Anthropic — Context Engineering Guide | https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents |
+| Model Context Protocol Spec | https://modelcontextprotocol.io/ |
 
 ---
 
-*Compiled and restructured as a personal knowledge-base document. Model names, prices, and benchmark figures change frequently — always verify against the provider's current documentation before making decisions based on them.*
+<div align="center">
+
+*Compiled as a living knowledge-base document. Model names, prices, and benchmarks change frequently — verify against provider docs before relying on them.*
+
+[⬆ Back to top](#-ai-engineering-playbook)
+
+</div>
